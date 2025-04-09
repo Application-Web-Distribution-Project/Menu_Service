@@ -1,0 +1,60 @@
+package com.esprit.microservice.menu;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+@Service
+public class WeatherService {
+
+    @Value("${weather.api.key}")
+    private String weatherApiKey; // API Key for OpenWeatherMap
+
+    @Value("${spoonacular.api.key}")
+    private String spoonacularApiKey; // API Key for Spoonacular
+
+    // OpenWeather One Call API URL
+    private static final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/onecall";
+
+    // Spoonacular Food Recommendation API URL
+    private static final String SPOONACULAR_API_URL = "https://api.spoonacular.com/recipes/complexSearch";
+
+    public String getWeather(double lat, double lon) {
+        String url = UriComponentsBuilder.fromHttpUrl(WEATHER_API_URL)
+                .queryParam("lat", lat)
+                .queryParam("lon", lon)
+                .queryParam("exclude", "minutely,hourly,alerts")
+                .queryParam("appid", weatherApiKey)
+                .queryParam("units", "metric")
+                .toUriString();
+
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(url, String.class);
+        return response;
+    }
+
+    // New method to get food recommendations based on weather conditions
+    public String getFoodRecommendations(String weatherCondition) {
+        // Example: Recommend soups if the weather is cold or smoothies if it's hot
+        String dietPreference = "vegetarian"; // Could be dynamic based on user preferences or weather
+
+        String query = "";
+        if (weatherCondition.contains("cold") || weatherCondition.contains("snow")) {
+            query = "soup";  // Recommend soup if the weather is cold
+        } else if (weatherCondition.contains("clear") || weatherCondition.contains("hot")) {
+            query = "smoothie";  // Recommend smoothie for hot weather
+        }
+
+        String url = UriComponentsBuilder.fromHttpUrl(SPOONACULAR_API_URL)
+                .queryParam("query", query)
+                .queryParam("diet", dietPreference)
+                .queryParam("apiKey", spoonacularApiKey)
+                .toUriString();
+
+        // Fetch food recommendations
+        RestTemplate restTemplate = new RestTemplate();
+        String foodResponse = restTemplate.getForObject(url, String.class);
+        return foodResponse;  // Return the raw Spoonacular response (or parse as needed)
+    }
+}

@@ -1,0 +1,81 @@
+package com.esprit.microservice.menu;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/menus")
+public class MenuRestApi {
+
+    private String title = "Hello, I'm the Menu Micro-Service";
+
+    @Autowired
+    private WeatherService weatherService; // Inject the WeatherService
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        System.out.println(title);
+        return title;
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<String> getWeatherAndFood(@RequestParam String city) {
+        String weather = weatherService.getWeather(city);
+        String recommendations = weatherService.getFoodRecommendations(weather);
+        return ResponseEntity.ok(recommendations);
+    }
+
+    @Autowired
+    private MenuService menuService;
+
+    // Changed the path to POST and the action should be to create a new menu
+    @PostMapping(path = "/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Menu> createMenu(@RequestBody Menu menu) {
+        Menu createdMenu = menuService.addMenu(menu);
+        return new ResponseEntity<>(createdMenu, HttpStatus.CREATED);
+    }
+
+    // Adjusted the path for retrieving all menus
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Menu>> getAll() {
+        List<Menu> menus = menuService.getAll();
+        return new ResponseEntity<>(menus, HttpStatus.OK);
+    }
+
+    // Corrected the method signature for the update operation
+    @PutMapping(path = "/modify/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Menu> updateMenu(@PathVariable(value = "id") Long id,
+                                           @RequestBody Menu menu) {
+        Menu updatedMenu = menuService.updateMenu(id, menu);
+        return new ResponseEntity<>(updatedMenu, HttpStatus.OK);
+    }
+
+    // Corrected the method for the delete operation
+    @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> deleteMenu(@PathVariable(value = "id") Long id) {
+        String deleteMessage = menuService.deleteMenu(id);
+        return new ResponseEntity<>(deleteMessage, HttpStatus.OK);
+    }
+
+    // New endpoint to get similar recipes
+    @GetMapping("/recipes/similar/{name}")
+    public ResponseEntity<String> getSimilarRecipes(@PathVariable String name) {
+        String similarRecipes = menuService.getSimilarRecipes(name);
+        return ResponseEntity.ok(similarRecipes);
+    }
+
+    // New endpoint to get nutrition info of a recipe
+    @GetMapping("/recipes/nutrition/{id}")
+    public ResponseEntity<String> getNutrition(@PathVariable int id) {
+        String nutritionInfo = menuService.getNutritionInfo(id);
+        return ResponseEntity.ok(nutritionInfo);
+    }
+}
