@@ -1,43 +1,43 @@
-# 🍽️ Menu Microservice Application
+# 🍽️ Microservice de Gestion de Menus
 
-This project is a Spring Boot microservice designed to manage restaurant menus and provide intelligent food recommendations based on weather conditions. It is part of a distributed system that also includes an **Eureka Service Registry** and an **API Gateway** for centralized routing and discovery.
-
----
-
-## 🧩 Microservice Architecture
-
-### 🔹 Menu Service
-- Manages CRUD operations for menu items.
-- Fetches similar recipes and nutrition info using the Spoonacular API.
-- Provides food suggestions based on current weather conditions using OpenWeatherMap API.
-
-### 🔹 Eureka Server
-- Registers microservices for service discovery.
-- Allows dynamic scaling and robust communication.
-
-### 🔹 API Gateway
-- Routes client requests to the appropriate microservices.
-- Handles cross-cutting concerns like logging, security, and CORS.
+Ce projet est un microservice Spring Boot conçu pour gérer les menus de restaurant et fournir des recommandations alimentaires intelligentes basées sur les conditions météorologiques. Il fait partie d’un système distribué qui comprend également un **registre de services Eureka** et une **passerelle API Gateway** pour le routage centralisé et la découverte des services.
 
 ---
 
-## ⚙️ Features
+## 🧩 Architecture Microservices
 
-- ✅ Add, update, delete, and view menu items.
-- ☁️ Fetch current weather data by city.
-- 🍲 Suggest recipes based on weather (e.g. soups for rainy days, smoothies for sunny days).
-- 🍽️ Retrieve similar recipes and nutritional information by dish name or ID.
-- 🧠 Integrates with **Spoonacular** and **OpenWeatherMap** APIs.
+### 🔹 Service de Menu
+- Gère les opérations CRUD sur les menus.
+- Récupère des recettes similaires et des informations nutritionnelles via l’API Spoonacular.
+- Fournit des suggestions alimentaires basées sur la météo actuelle grâce à l’API OpenWeatherMap.
+
+### 🔹 Serveur Eureka
+- Enregistre les microservices pour la découverte de services.
+- Permet une communication robuste et un déploiement dynamique.
+
+### 🔹 Passerelle API (API Gateway)
+- Route les requêtes des clients vers les microservices appropriés.
+- Gère les préoccupations transversales telles que les logs, la sécurité et CORS.
 
 ---
 
-## 🛠️ Technologies Used
+## ⚙️ Fonctionnalités
 
-- Spring Boot
-- Spring Web
-- Spring Cloud Eureka
-- Spring Cloud Gateway
-- RestTemplate
-- H2 (or any database)
-- JSON, HTTP, REST
-- External APIs: Spoonacular & OpenWeatherMap
+- ✅ Ajouter, modifier, supprimer et consulter des menus.
+- ☁️ Récupérer les données météorologiques actuelles par ville.
+- 🍲 Suggérer des recettes en fonction de la météo (ex : soupes pour les jours pluvieux, smoothies pour les jours ensoleillés).
+- 🍽️ Obtenir des recettes similaires et des informations nutritionnelles par nom ou ID du plat.
+- 🧠 Intégration avec les API **Spoonacular** et **OpenWeatherMap**.
+
+---
+
+## 🛠️ Technologies Utilisées
+
+- Spring Boot  
+- Spring Web  
+- Spring Cloud Eureka  
+- Spring Cloud Gateway  
+- RestTemplate  
+- H2 (ou toute autre base de données)  
+- JSON, HTTP, REST  
+- APIs externes : Spoonacular & OpenWeatherMap
