@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/menus")
-@CrossOrigin(origins = "http://localhost:4200")
 public class MenuRestApi {
 
     private String title = "Hello, I'm the Menu Micro-Service";
@@ -47,6 +46,11 @@ public class MenuRestApi {
     public ResponseEntity<List<Menu>> getAll() {
         List<Menu> menus = menuService.getAll();
         return new ResponseEntity<>(menus, HttpStatus.OK);
+    }
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Menu> getById(@PathVariable Long id) {
+        Menu menu = menuService.getById(id);
+        return new ResponseEntity<>(menu, HttpStatus.OK);
     }
 
     // Corrected the method signature for the update operation

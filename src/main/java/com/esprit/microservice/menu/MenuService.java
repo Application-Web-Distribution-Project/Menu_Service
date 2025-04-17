@@ -23,6 +23,10 @@ public class MenuService {
     public List<Menu> getAll() {
         return menuRepository.findAll();
     }
+    public Menu getById(Long id) {
+        return menuRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu not found with id: " + id));
+    }
 
     public Menu updateMenu(Long id, Menu newMenu) {
         Optional<Menu> existingMenuOptional = menuRepository.findById(id);
